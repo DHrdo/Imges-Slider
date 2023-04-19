@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMAGE SLIDER</title>
+</head>
+
+<body>
+    <link rel="stylesheet" href="style.css" />
+
+    <div class="container">
+    </div>
+    <div class="button-container">
+        <button class="btn" type="button">PRECEDENTE</button>
+        <button class="btn" type="button">SUCCESSIVO</button>
+    </div>
+
+    <script>
+
+        const images = ['0.jpg', '1.jpg', '2.jpg'];
+        let indexImage = 0;
+
+        let firstImage, newImage;
+        const btns = document.querySelectorAll('.btn');
+        let imgContainer = document.querySelector('.container');
+
+
+        addEventListener('DOMContentLoaded', () => {            //creates the first showing image on page loaded
+            firstImage = document.createElement('img');
+            firstImage.classList.add('img');
+            firstImage.setAttribute('id', 'prova');
+            firstImage.setAttribute('src', images[indexImage]);
+            imgContainer.appendChild(firstImage);
+        });
+
+        btns.forEach(function (item, index) {
+            item.addEventListener('click', (e) => {
+                btns.forEach(btn => btn.disabled = true);
+                switch (index) {
+                    case 0:
+
+                        for (let i = 0; i < images.length; i++){}
+
+                        indexImage--;
+                        if (firstImage.classList.contains('right-transition')) {
+                            firstImage.classList.remove('right-transition');
+                        };
+                        firstImage.classList.add('left-transition');
+
+                        var newImage = document.createElement('img');
+                        newImage.classList.add('img');
+                        newImage.classList.add('actual-image-transition-left');
+
+                        if (indexImage < 0) {
+                            indexImage = 2;
+                        };
+
+                        newImage.setAttribute('src', images[indexImage]);
+                        imgContainer.appendChild(newImage);
+
+                        firstImage.addEventListener('animationend', () => {
+                            btns.forEach(btn => btn.disabled = false);
+                            firstImage.classList.remove('left-transition');
+                            imgContainer.removeChild(firstImage);
+                            newImage.classList.remove('actual-image-transition-left');
+                            firstImage = newImage;
+                        });
+                        break;
+
+                    case 1:
+                        indexImage++;
+                        if (firstImage.classList.contains('left-transition')) {
+                            firstImage.classList.remove('left-transition');
+                        };
+                        firstImage.classList.add('right-transition');
+
+                        var newImage = document.createElement('img');
+                        newImage.classList.add('img');
+                        newImage.classList.add('actual-image-transition-right');
+
+                        if (indexImage > 2) {
+                            indexImage = 0;
+                        };
+
+                        newImage.setAttribute('src', images[indexImage]);
+                        imgContainer.appendChild(newImage);
+
+                        firstImage.addEventListener('animationend', () => {
+                            btns.forEach(btn => btn.disabled = false);
+                            firstImage.classList.remove('right-transition');
+                            imgContainer.removeChild(firstImage);
+                            newImage.classList.remove('actual-image-transition-right');
+                            firstImage = newImage;
+                        });
+                        break;
+                };
+            });
+        });
+    </script>
+</body>
+
+</html>
